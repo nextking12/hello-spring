@@ -3,6 +3,8 @@ package org.launchcode.hello_spring.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @Controller
 @ResponseBody
 @RequestMapping("hello")
@@ -30,23 +32,57 @@ public class HelloController {
     public String helloWithQueryParam(@RequestParam String name) {
         return "Hello, " + name + "!";
     }
+
     //handles requests of the form /hello/LaunchCode
     @GetMapping("{name}")
 
-    public  String helloWithPathParam(@PathVariable String name){
+    public String helloWithPathParam(@PathVariable String name) {
         return "Hello " + name + "!";
 
     }
+
     @GetMapping("form")
 
-    public  String helloWithForm() {
+    public String helloWithForm() {
         return "<html>" +
                 "<body>" +
                 "<form action='hello' method ='post'>" +
                 "<input type='text' name='name'>" +
+                "<select name='language'>" +
+                "<option value=''>Please Choose a Language</option>" +
+                "<option value='english'>English</option>" +
+                "<option value='spanish'>Spanish</option>" +
+                "<option value='french'>French</option>" +
                 "<input type='submit' value='Greet Me!'>" +
                 "</form>" +
                 "</body>" +
                 "</html>";
+    }
+
+
+    // @RequestMapping(value = "hello post", method = {RequestMethod.POST})
+
+
+    public static String createMessage(String name, String language) {
+        String greeting = "";
+        if (language.equals("english")) {
+            //return "Hello " + name + "!";
+            greeting = "Hello";
+        } else if (language.equals("spanish")) {
+            //return "Hola " + name + "!";
+            greeting = "Hola";
+        }
+        return greeting + " " + name + "!";
+    }
+
+    @RequestMapping(value = "hello", method = RequestMethod.POST)
+    @ResponseBody
+    public String helloPost(@RequestParam String name, @RequestParam String language) {
+        if (name == null) {
+            name = "World";
+        }
+
+        return createMessage(name, language);
+
     }
 }

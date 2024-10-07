@@ -1,13 +1,14 @@
 package org.launchcode.hello_spring.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
 @Controller
-@ResponseBody
-@RequestMapping("hello")
+
+
 public class HelloController {
     //Static Requests
 
@@ -29,8 +30,10 @@ public class HelloController {
     // Handles requests of the form /hello?name=LaunchCode
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST})
 
-    public String helloWithQueryParam(@RequestParam String name) {
-        return "Hello, " + name + "!";
+    public String helloWithQueryParam(@RequestParam String name, Model model ) {
+        String greeting = "Hello, " + name + "!";
+        model.addAttribute("greeting", greeting);
+        return "hello";
     }
 
     //handles requests of the form /hello/LaunchCode
@@ -42,21 +45,8 @@ public class HelloController {
     }
 
     @GetMapping("form")
-
     public String helloWithForm() {
-        return "<html>" +
-                "<body>" +
-                "<form action='hello' method ='post'>" +
-                "<input type='text' name='name'>" +
-                "<select name='language'>" +
-                "<option value=''>Please Choose a Language</option>" +
-                "<option value='english'>English</option>" +
-                "<option value='spanish'>Spanish</option>" +
-                "<option value='french'>French</option>" +
-                "<input type='submit' value='Greet Me!'>" +
-                "</form>" +
-                "</body>" +
-                "</html>";
+        return "form";
     }
 
 
